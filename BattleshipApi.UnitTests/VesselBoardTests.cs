@@ -1,5 +1,4 @@
-﻿using BattleshipApi.BusinessLogic.Factories;
-using BattleshipApi.BusinessLogic.Models;
+﻿using BattleshipApi.BusinessLogic.Models;
 
 namespace BattleshipApi.UnitTests;
 
@@ -24,9 +23,11 @@ public class VesselBoardTests
     [Test]
     public Task it_should_return_graphic_in_tostring()
     {
-        var sut = new VesselBoard(new VesselFactory(), 10);
+        var sut = new VesselBoard(10);
+
+        var vessel = new Vessel("Fake", 5);
         
-        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, 5);
+        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel);
 
         return Verifier.Verify(sut.ToString());
     }
@@ -34,9 +35,11 @@ public class VesselBoardTests
     [Test]
     public Task it_should_return_graphic_in_tostring_vertical()
     {
-        var sut = new VesselBoard(new VesselFactory(), 10);
+        var sut = new VesselBoard(10);
         
-        sut.AddVessel(new Coordinate(1, 1), VesselOrientation.Vertical, 5);
+        var vessel = new Vessel("Fake", 5);
+        
+        sut.AddVessel(new Coordinate(1, 1), VesselOrientation.Vertical, vessel);
 
         return Verifier.Verify(sut.ToString());
     }
@@ -44,11 +47,13 @@ public class VesselBoardTests
     [Test]
     public Task it_should_return_graphic_in_tostring_multiple()
     {
-        var sut = new VesselBoard(new VesselFactory(), 10);
+        var sut = new VesselBoard(10);
         
-        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, 5);
-        sut.AddVessel(new Coordinate(1, 3), VesselOrientation.Horizontal, 4);
-        sut.AddVessel(new Coordinate(5, 5), VesselOrientation.Vertical, 5);
+        var vessel = new Vessel("Fake", 5);
+        
+        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel);
+        sut.AddVessel(new Coordinate(1, 3), VesselOrientation.Horizontal, vessel);
+        sut.AddVessel(new Coordinate(5, 5), VesselOrientation.Vertical, vessel);
 
         return Verifier.Verify(sut.ToString());
     }
@@ -56,9 +61,11 @@ public class VesselBoardTests
     [Test]
     public void it_should_throw_exception_if_vessels_intersect()
     {
-        var sut = new VesselBoard(new VesselFactory(), 3);
+        var sut = new VesselBoard(3);
         
-        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, 1);
+        var vessel = new Vessel("Fake", 5);
+        
+        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel);
         // sut.AddVessel(new Coordinate(1, 0), VesselOrientation.Horizontal, 2);
 
         var x = sut.ToString();

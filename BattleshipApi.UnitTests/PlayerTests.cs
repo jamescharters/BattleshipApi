@@ -19,6 +19,32 @@ public class PlayerTests
         Assert.AreNotEqual(Guid.Empty, sut.Id);
         Assert.IsEmpty(sut.Vessels);
         Assert.IsNotNull(sut.VesselBoard);
-        Assert.IsNotNull(sut.ShotBoard);
+    }
+
+    [Test]
+    public void it_should_add_vessel()
+    {
+        var sut = new Player("Douglas MacArthur");
+
+        var vessel = new Vessel("Fake", 5);
+        
+        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel);
+        
+        Assert.AreEqual(1, sut.Vessels.Count);
+        Assert.AreEqual(vessel.Id, sut.Vessels.First().Id);
+    }
+    
+    [Test]
+    public void it_should_remove_vessel()
+    {
+        var sut = new Player("Douglas MacArthur");
+
+        var vessel = new Vessel("Fake", 5);
+        
+        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel);
+        
+        sut.RemoveVessel(vessel.Id);
+        
+        Assert.AreEqual(0, sut.Vessels.Count);
     }
 }

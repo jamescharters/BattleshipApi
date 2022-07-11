@@ -9,10 +9,7 @@ public class VesselTests
     {
         // A vessel is dead if the damage is the same as the number of tiles that it occupies
         
-        var sut = new Vessel
-        {
-            Size = 5
-        };
+        var sut = new Vessel("Fake", 5);
         
         sut.AddDamage(5);
 
@@ -24,10 +21,7 @@ public class VesselTests
     {
         // A damaged vessel =/= dead
         
-        var sut = new Vessel
-        {
-            Size = 5
-        };
+        var sut = new Vessel("Fake", 5);
         
         sut.AddDamage(2);
 
@@ -39,10 +33,7 @@ public class VesselTests
     {
         // Crazy high damage should just wrap to the size of the vessel
         
-        var sut = new Vessel
-        {
-            Size = 5
-        };
+        var sut = new Vessel("Fake", 5);
         
         sut.AddDamage(100);
 
@@ -52,10 +43,7 @@ public class VesselTests
     [Test]
     public void it_should_not_allow_negative_damage()
     {
-        var sut = new Vessel
-        {
-            Size = 5
-        };
+        var sut = new Vessel("Fake", 5);
 
         Assert.Throws<ArgumentOutOfRangeException>(() => sut.AddDamage(-7));
     }

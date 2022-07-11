@@ -1,4 +1,4 @@
-﻿using BattleshipApi.BusinessLogic.Factories;
+﻿using BattleshipApi.BusinessLogic.Exceptions;
 using BattleshipApi.BusinessLogic.Models;
 
 namespace BattleshipApi.UnitTests;
@@ -9,7 +9,7 @@ public class ShipBoardTests
 
     public ShipBoardTests()
     {
-        this.vesselBoard = new VesselBoard(new VesselFactory());
+        this.vesselBoard = new VesselBoard();
     }
 
     [Test]
@@ -42,9 +42,14 @@ public class ShipBoardTests
     [Test]
     public void it_should_throw_VesselIntersectionException_if_intersection_exists()
     {
+        var vessel1 = new Vessel("Vessel 1", 5);
+        // var vessel2 = new Vessel("Vessel 2", 5);
         
+        vesselBoard.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel1);
+
+        // Assert.Throws<VesselIntersectionException>(() =>
+        //     vesselBoard.AddVessel(new Coordinate(0, 2), VesselOrientation.Horizontal, vessel2));
         
-        vesselBoard.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, 5);
-        vesselBoard.AddVessel(new Coordinate(3, 0), VesselOrientation.Horizontal, 5);
+        Console.WriteLine(vesselBoard.ToString());
     }
 }

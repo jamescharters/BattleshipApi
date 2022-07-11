@@ -32,39 +32,54 @@ public class BattleshipGame
         Players.Add(playerFactory.Create(playerName));
     }
 
-    public bool FireAtTarget(Guid playerId, Coordinate target)
+    public FireResult FireAt(Guid playerId, Coordinate target)
     {
         var currentPlayer = getPlayer(playerId);
 
         var vesselTile = currentPlayer.VesselBoard.TileAt(target);
-        var shotTile = currentPlayer.ShotBoard.TileAt(target);
 
         if (vesselTile == null)
         {
-            // DEVNOTE: target is out of bounds? Some wild shootin' there son...
-            throw new TargetOutOfBoundsException($"Target co-ordinate ({target.Row}, {target.Column}) is out of bounds!");
+            // DEVNOTE: target is out of bounds? Thar be some wild shootin' there son...
+            Console.WriteLine($"Target co-ordinate ({target.Row}, {target.Column}) is out of bounds!");
+
+            return FireResult.OutOfBounds;
         }
 
-        if (shotTile.Type is TileType.Hit or TileType.Miss)
+        if (vesselTile.Type is TileType.Hit or TileType.Miss)
         {
             // DEVNOTE: this tile has already been fired upon
-            return false;
+            Console.WriteLine($"Target co-ordinate ({target.Row}, {target.Column}) has already been fired at!");
+            
+            return FireResult.AlreadyFiredAt;
         }
 
-        vesselTile.Occupant.AddDamage();
+        currentPlayer.FireAt(target);
+        
+        // if (vesselTile.Occupant != null)
+        // {
+        //     vesselTile.Occupant.AddDamage();   
+        //     
+        //     if (vesselTile.Occupant.IsDead)
+        //     {
+        //         Console.WriteLine($"Vessel {vesselTile.Occupant.Name} (captained by {currentPlayer.Name}) has been sunk!");
+        //     }
+        // }
 
-        if (vesselTile.Occupant.IsDead)
+        if (currentPlayer.IsLoser)
         {
-            Console.WriteLine($"Vessel {vesselTile.Occupant.Name} (captained by {currentPlayer.Name}) has been sunk!");
+            Console.WriteLine($"Captain {currentPlayer.Name} has been defeated!");
         }
         
-        shotTile.Type = vesselTile.Type == TileType.Vessel ? TileType.Hit : TileType.Miss;
+        vesselTile.Type = vesselTile.Type == TileType.Vessel ? TileType.Hit : TileType.Miss;
 
-        return shotTile.Type == TileType.Hit;
+        return vesselTile.Type == TileType.Hit ? FireResult.Hit : FireResult.Miss;
     }
 
+    #region Private 
     private Player getPlayer(Guid playerId)
     {
         return Players.Single(_ => _.Id == playerId);
     }
+    #endregion
 }

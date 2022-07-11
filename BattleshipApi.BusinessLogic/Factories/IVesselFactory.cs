@@ -4,5 +4,5 @@ namespace BattleshipApi.BusinessLogic.Factories;
 
 public interface IVesselFactory
 {
-    Vessel Create(int vesselSize = 1);
+    Vessel Create(int health);
 }

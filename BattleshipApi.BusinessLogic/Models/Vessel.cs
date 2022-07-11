@@ -18,33 +18,36 @@ public class Vessel : ITileOccupant
     public int Damage { get; set; }
     
     /// <summary>
-    /// Length of the vessel in virtual "squares" of the board
+    /// Corresponds to of the vessel in virtual "squares" of the board, i.e. how many hits it can take before sinking
     /// </summary>
     public int Size { get; set; }
-
-    // public TileOccupationType Type { get; set; }
 
     public bool IsDead => Damage >= Size;
 
     public TileType Type => TileType.Vessel;
-    //
-    // public List<Tile> Tiles { get; set; } = new();
-    //
-    //
-    // public Vessel(List<Tile> tiles)
-    // {
-    //     Tiles = tiles;
-    // }
-    
+
+    public Vessel(string name, int size)
+    {
+        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException($"{nameof(name)}");
+        if (size <= 0) throw new ArgumentOutOfRangeException($"{nameof(size)}");
+
+        Id = Guid.NewGuid();
+        Damage = 0;
+        Name = name;
+        Size = size;
+    }
+
     public void AddDamage(int amount = 1)
     {
         if (amount < 0) throw new ArgumentOutOfRangeException();
 
         if (Damage + amount == Size)
         {
-            Damage = Size;
+            Damage = amount;
             return;
         }
+        
+        Console.WriteLine($"Vessel {Name} took {amount} damage!");
         
         Damage += amount;
     }

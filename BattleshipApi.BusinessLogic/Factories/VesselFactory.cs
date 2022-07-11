@@ -12,14 +12,8 @@ public class VesselFactory : IVesselFactory
         namesGenerator = new NamesGenerator();
     }
     
-    public Vessel Create(int vesselSize = 1)
+    public Vessel Create(int health)
     {
-        return new Vessel
-        {
-            Id = Guid.NewGuid(),
-            Damage = 0,
-            Size = vesselSize,
-            Name = namesGenerator.GetRandomName()
-        };
+        return new Vessel(namesGenerator.GetRandomName(), health);
     }
 }
