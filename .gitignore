@@ -1,0 +1,44 @@
+terraform/.env
+plan.out
+plan.out.json
+
+# dependencies
+node_modules
+/.pnp
+.pnp.js
+obj/
+
+# production
+.serverless
+coverage/
+# misc
+.DS_Store
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.idea/shelf/
+.idea/workspace.xml
+
+.terraform
+.terraform.lock.hcl
+
+.idea
+.vscode
+.vs
+TestResults
+
+bin
+obj
+mock_*
+
+cdk.context.json
+
+*.pk12
+**/appsettings.Development.json
+*.pem
+*.user
+
+# Verify.NUnit
+**/*.received.
