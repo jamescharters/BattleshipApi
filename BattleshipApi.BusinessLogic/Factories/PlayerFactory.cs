@@ -1,4 +1,5 @@
-﻿using BattleshipApi.BusinessLogic.Models;
+﻿using BattleshipApi.BusinessLogic.Interfaces;
+using BattleshipApi.BusinessLogic.Models;
 
 namespace BattleshipApi.BusinessLogic.Factories;
 

@@ -1,4 +1,4 @@
-﻿namespace BattleshipApi.BusinessLogic.Models;
+﻿namespace BattleshipApi.Common.Models;
 
 public record class Coordinate
 {
@@ -6,7 +6,7 @@ public record class Coordinate
     /// Row
     /// </summary>
     public int Row { get; set; }
-    
+
     /// <summary>
     /// Column
     /// </summary>
@@ -19,5 +19,10 @@ public record class Coordinate
 
         Row = row;
         Column = column;
+    }
+
+    public override string ToString()
+    {
+        return $"(Row: {Row}, Column: {Column})";
     }
 }

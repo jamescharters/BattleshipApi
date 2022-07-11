@@ -1,21 +1,22 @@
-﻿using BattleshipApi.BusinessLogic.Exceptions;
-using BattleshipApi.BusinessLogic.Factories;
+﻿using BattleshipApi.BusinessLogic.Interfaces;
+using BattleshipApi.Common.Enums;
+using BattleshipApi.Common.Models;
 
 namespace BattleshipApi.BusinessLogic.Models;
 
-public class BattleshipGame
+public class Game
 {
     private readonly IPlayerFactory playerFactory;
 
     public Guid GameId { get; private set; } = Guid.NewGuid();
     public List<Player> Players { get; set; } = new();
 
-    public BattleshipGame(IPlayerFactory playerFactory)
+    public Game(IPlayerFactory playerFactory)
     {
         this.playerFactory = playerFactory;
     }
 
-    public void NewGame(List<string> playerNames)
+    public void Initialise(List<string> playerNames)
     {
         if (!playerNames.Any())
         {
@@ -25,7 +26,7 @@ public class BattleshipGame
         Players.AddRange(playerNames.Select(_ => playerFactory.Create(_)));
     }
 
-    public void NewGame(string playerName)
+    public void Initialise(string playerName)
     {
         if (string.IsNullOrWhiteSpace(playerName)) throw new ArgumentNullException($"{nameof(playerName)}");
 
@@ -34,13 +35,13 @@ public class BattleshipGame
 
     public FireResult FireAt(Guid playerId, Coordinate target)
     {
-        var currentPlayer = getPlayer(playerId);
+        var currentPlayer = GetPlayer(playerId);
 
         var vesselTile = currentPlayer.VesselBoard.TileAt(target);
 
         if (vesselTile == null)
         {
-            // DEVNOTE: target is out of bounds? Thar be some wild shootin' there son...
+            // Thar be some wild shootin' there son...
             Console.WriteLine($"Target co-ordinate ({target.Row}, {target.Column}) is out of bounds!");
 
             return FireResult.OutOfBounds;
@@ -48,38 +49,27 @@ public class BattleshipGame
 
         if (vesselTile.Type is TileType.Hit or TileType.Miss)
         {
-            // DEVNOTE: this tile has already been fired upon
             Console.WriteLine($"Target co-ordinate ({target.Row}, {target.Column}) has already been fired at!");
-            
+
             return FireResult.AlreadyFiredAt;
         }
 
         currentPlayer.FireAt(target);
-        
-        // if (vesselTile.Occupant != null)
-        // {
-        //     vesselTile.Occupant.AddDamage();   
-        //     
-        //     if (vesselTile.Occupant.IsDead)
-        //     {
-        //         Console.WriteLine($"Vessel {vesselTile.Occupant.Name} (captained by {currentPlayer.Name}) has been sunk!");
-        //     }
-        // }
 
-        if (currentPlayer.IsLoser)
+        if (currentPlayer.IsDefeated)
         {
             Console.WriteLine($"Captain {currentPlayer.Name} has been defeated!");
         }
-        
+
         vesselTile.Type = vesselTile.Type == TileType.Vessel ? TileType.Hit : TileType.Miss;
 
         return vesselTile.Type == TileType.Hit ? FireResult.Hit : FireResult.Miss;
     }
 
     #region Private 
-    private Player getPlayer(Guid playerId)
+    public Player? GetPlayer(Guid playerId)
     {
-        return Players.Single(_ => _.Id == playerId);
+        return Players.SingleOrDefault(_ => _.Id == playerId);
     }
     #endregion
 }

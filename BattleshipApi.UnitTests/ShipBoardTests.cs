@@ -1,5 +1,6 @@
-﻿using BattleshipApi.BusinessLogic.Exceptions;
-using BattleshipApi.BusinessLogic.Models;
+﻿using BattleshipApi.BusinessLogic.Models;
+using BattleshipApi.Common.Enums;
+using BattleshipApi.Common.Models;
 
 namespace BattleshipApi.UnitTests;
 
@@ -20,8 +21,8 @@ public class ShipBoardTests
         // var tiles = vesselBoard.Tiles;
 
     }
-    
-    
+
+
     [Test]
     public void it_should_add_vertical_ship_correctly()
     {
@@ -44,12 +45,12 @@ public class ShipBoardTests
     {
         var vessel1 = new Vessel("Vessel 1", 5);
         // var vessel2 = new Vessel("Vessel 2", 5);
-        
+
         vesselBoard.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel1);
 
         // Assert.Throws<VesselIntersectionException>(() =>
         //     vesselBoard.AddVessel(new Coordinate(0, 2), VesselOrientation.Horizontal, vessel2));
-        
+
         Console.WriteLine(vesselBoard.ToString());
     }
 }

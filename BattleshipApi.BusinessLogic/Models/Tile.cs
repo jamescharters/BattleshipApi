@@ -1,5 +1,11 @@
-﻿namespace BattleshipApi.BusinessLogic.Models;
+﻿using BattleshipApi.BusinessLogic.Interfaces;
+using BattleshipApi.Common.Models;
 
+namespace BattleshipApi.BusinessLogic.Models;
+
+/// <summary>
+/// Denotes a tile on the grid of tiles that make up a Battleship board
+/// </summary>
 public class Tile : IEquatable<Tile>
 {
     public TileType Type { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System.Text;
-using BattleshipApi.BusinessLogic.Exceptions;
-using BattleshipApi.BusinessLogic.Factories;
+using BattleshipApi.Common.Enums;
+using BattleshipApi.Common.Exceptions;
+using BattleshipApi.Common.Models;
 
 namespace BattleshipApi.BusinessLogic.Models;
 
@@ -45,7 +46,7 @@ public class VesselBoard
 
         var xPos = x - row;
         if (xPos < 0 || column < 0) return null;
-        
+
         return Tiles[xPos, column];
     }
 
@@ -61,67 +62,65 @@ public class VesselBoard
 
     public void AddVessel(Coordinate start, VesselOrientation vesselOrientation, Vessel vessel)
     {
-        var proposedVesselTiles = new List<Tile>();
-
-        if (findTilesByOccupantId(vessel.Id).Count > 0)
-        {
-            throw new VesselAlreadyPlacedException($"Vessel {vessel.Name} ({vessel.Id}) already placed!");
-        }
-
-        // We should have a sensible length
         if (vessel.Size <= 0) throw new ArgumentOutOfRangeException();
 
         // We should not try to go out of bounds
-        if (vesselOrientation == VesselOrientation.Horizontal && start.Row + vessel.Size > MaxX)
-            throw new Exception("Cannot place Vessel: overflow on X-axis");
-        if (vesselOrientation == VesselOrientation.Vertical && start.Column + vessel.Size > MaxY)
-            throw new Exception("Cannot place Vessel: overflow on Y-axis");
+        if (vesselOrientation == VesselOrientation.Horizontal && start.Column + vessel.Size > MaxX)
+            throw new VesselOutOfBoundsException("Cannot place Vessel: overflow on X-axis");
 
-        // TODO: refactor this
+        if (vesselOrientation == VesselOrientation.Vertical && MaxY - start.Row - 1 + vessel.Size > MaxY)
+            throw new VesselOutOfBoundsException("Cannot place Vessel: overflow on Y-axis");
+
+        // We can't place the same vessel more than once
+        if (findTilesByOccupantId(vessel.Id).Count > 0)
+            throw new VesselAlreadyPlacedException($"Vessel {vessel.Name} ({vessel.Id}) already placed!");
+
+        var proposedVesselTiles = new List<Tile>();
+
+        // Horizontal ships start at the (x,y) co-ordinate then count "rightwards" from that point (i.e. column++)
         if (vesselOrientation == VesselOrientation.Horizontal)
         {
-            var x = Tiles.GetLength(0) - start.Row - 1;
+            var xPos = Tiles.GetLength(0) - start.Row - 1;
 
-            for (var tick = 0; tick < vessel.Size; tick++)
+            for (var tileIndex = 0; tileIndex < vessel.Size; tileIndex++)
             {
-                proposedVesselTiles.Add(new Tile(x, tick + start.Column, TileType.Vessel));
-                // proposedVesselTiles.Add( TileAt(new Coordinate(x, tick + start.Column)));
+                proposedVesselTiles.Add(new Tile(xPos, tileIndex + start.Column, TileType.Vessel));
             }
         }
 
+        // Vertical ships start at the (x,y) co-ordinate then count "downwards" from that point (i.e. row++)
         if (vesselOrientation == VesselOrientation.Vertical)
         {
-            for (var tick = 0; tick < vessel.Size; tick++)
+            var yPos = Tiles.GetLength(1);
+
+            for (var tileIndex = 0; tileIndex < vessel.Size; tileIndex++)
             {
-                proposedVesselTiles.Add(new Tile(tick + start.Row, start.Column, TileType.Vessel));
-                // proposedVesselTiles.Add( TileAt(new Coordinate(tick + start.Row, start.Column)));
+                proposedVesselTiles.Add(new Tile((yPos - start.Row - 1) + tileIndex, start.Column, TileType.Vessel));
             }
         }
 
-        // Now we have a proposed set of tiles for this vessel, check if it intersects with another vessel
+        // Check for overlaps
         var currentVesselTiles = findTilesByType(TileType.Vessel);
 
-        // Sanity check: is the entire grid crammed full of vessels?
+        // Is the entire grid crammed full of vessels?
         if (currentVesselTiles.Count == Tiles.Length)
             throw new BoardFullException("Current board is fully occupied");
 
-        foreach (var occupiedTile in currentVesselTiles)
+        foreach (var propTile in proposedVesselTiles)
         {
-            var converted = TileAt(occupiedTile.Coordinates);
-            if (proposedVesselTiles.Any(computedTile => converted.Coordinates.Row == converted.Coordinates.Row &&
-                                                        converted.Coordinates.Column ==
-                                                        converted.Coordinates.Column))
+            foreach (var occupiedTile in currentVesselTiles)
             {
-                throw new VesselIntersectionException(
-                    $"Vessel intersects tile covered by vessel {occupiedTile.Occupant.Name}!");
+                if (propTile.Coordinates.Equals(occupiedTile.Coordinates))
+                {
+                    throw new VesselIntersectionException(
+                        $"Vessel {vessel.Name} intersects tile occupied by vessel {occupiedTile.Occupant.Name} at {propTile.Coordinates}!");
+                }
             }
         }
 
-        // If we are in the clear, associate ShipBoard tiles with the new vessel (to help us find hits/misses later)
-
         foreach (var proposedTile in proposedVesselTiles)
         {
-            var vesselTile = TileAt(proposedTile.Coordinates);
+            var vesselTile = Tiles[proposedTile.Coordinates.Row, proposedTile.Coordinates.Column];
             vesselTile.Type = TileType.Vessel;
             vesselTile.Occupant = vessel;
         }
@@ -140,25 +139,25 @@ public class VesselBoard
                 switch (tile.Type)
                 {
                     case TileType.Hit:
-                    {
-                        stringBuilder.Append(" + ");
-                        break;
-                    }
+                        {
+                            stringBuilder.Append(" + ");
+                            break;
+                        }
                     case TileType.Miss:
-                    {
-                        stringBuilder.Append(" - ");
-                        break;
-                    }
+                        {
+                            stringBuilder.Append(" - ");
+                            break;
+                        }
                     case TileType.Vessel:
-                    {
-                        stringBuilder.Append(" V ");
-                        break;
-                    }
+                        {
+                            stringBuilder.Append(" V ");
+                            break;
+                        }
                     case TileType.Water:
-                    {
-                        stringBuilder.Append(" * ");
-                        break;
-                    }
+                        {
+                            stringBuilder.Append(" * ");
+                            break;
+                        }
                 }
             }
 

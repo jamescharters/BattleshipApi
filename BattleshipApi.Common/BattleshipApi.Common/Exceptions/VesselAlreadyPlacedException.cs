@@ -1,4 +1,4 @@
-﻿namespace BattleshipApi.BusinessLogic.Exceptions;
+﻿namespace BattleshipApi.Common.Exceptions;
 
 public class VesselAlreadyPlacedException : Exception
 {

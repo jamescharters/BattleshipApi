@@ -2,29 +2,23 @@
 
 namespace BattleshipApi.Repository;
 
-public interface IGameRepository
-{
-    void Add(BattleshipGame game);
-    BattleshipGame? Get(Guid gameId);
-}
-
 public class GameRepository : IGameRepository
 {
     // DEVNOTE: this is intentionally a *very* naive, unsafe, inmemory repository of Battleship games for the API
-    
-    private List<BattleshipGame> battleshipGames;
+
+    private List<Game> battleshipGames;
 
     public GameRepository()
     {
-        battleshipGames = new List<BattleshipGame>();
+        battleshipGames = new List<Game>();
     }
 
-    public void Add(BattleshipGame game)
+    public void Add(Game game)
     {
         battleshipGames.Add(game);
     }
 
-    public BattleshipGame? Get(Guid gameId)
+    public Game? Get(Guid gameId)
     {
         return battleshipGames.SingleOrDefault(_ => _.GameId == gameId);
     }

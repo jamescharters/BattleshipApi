@@ -1,6 +1,6 @@
 using BattleshipApi.BusinessLogic.Models;
 
-namespace BattleshipApi.BusinessLogic.Factories;
+namespace BattleshipApi.BusinessLogic.Interfaces;
 
 public interface IPlayerFactory
 {

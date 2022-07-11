@@ -16,7 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BattleshipApi.csproj" />
+      <ProjectReference Include="..\BattleshipApi.BusinessLogic\BattleshipApi.BusinessLogic.csproj" />
+      <ProjectReference Include="..\BattleshipApi\BattleshipApi.csproj" />
     </ItemGroup>
 
 </Project>

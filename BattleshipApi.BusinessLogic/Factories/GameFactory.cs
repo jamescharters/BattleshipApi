@@ -1,4 +1,5 @@
-﻿using BattleshipApi.BusinessLogic.Models;
+﻿using BattleshipApi.BusinessLogic.Interfaces;
+using BattleshipApi.BusinessLogic.Models;
 
 namespace BattleshipApi.BusinessLogic.Factories;
 
@@ -9,13 +10,19 @@ public class GameFactory : IGameFactory
     public GameFactory(IPlayerFactory playerFactory)
     {
         this.playerFactory = playerFactory;
-    } 
-    
-    public BattleshipGame Create(List<string> playerNames)
-    {
-        var x = new BattleshipGame(playerFactory);
-        x.NewGame(playerNames);
+    }
 
-        return x;
+    public Game Create(List<string> playerNames)
+    {
+        if (!playerNames.Any())
+        {
+            throw new ArgumentException($"{nameof(playerNames)} does not contain any elements!");
+        }
+        
+        var newGame = new Game(playerFactory);
+        
+        newGame.Initialise(playerNames);
+
+        return newGame;
     }
 }

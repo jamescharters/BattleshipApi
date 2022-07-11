@@ -8,11 +8,6 @@
 
     <ItemGroup>
       <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-      <PackageReference Include="NamesGenerator" Version="1.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\BattleshipApi.Common\BattleshipApi.Common\BattleshipApi.Common.csproj" />
     </ItemGroup>
 
 </Project>

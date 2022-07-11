@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using BattleshipApi.BusinessLogic.Interfaces;
 using BattleshipApi.BusinessLogic.Models;
 
 namespace BattleshipApi.BusinessLogic.Factories;
@@ -11,9 +12,14 @@ public class VesselFactory : IVesselFactory
     {
         namesGenerator = new NamesGenerator();
     }
-    
-    public Vessel Create(int health)
+
+    public Vessel Create(int size)
     {
-        return new Vessel(namesGenerator.GetRandomName(), health);
+        if (size <= 0)
+        {
+            throw new ArgumentOutOfRangeException($"{size}");
+        }
+        
+        return new Vessel(namesGenerator.GetRandomName(), size);
     }
 }

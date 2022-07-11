@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.UnitTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.BusinessLogic", "BattleshipApi.BusinessLogic\BattleshipApi.BusinessLogic.csproj", "{FD74836B-296B-41A8-91C2-634B24D9DAA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.IntegrationTests", "BattleshipApi.IntegrationTests\BattleshipApi.IntegrationTests\BattleshipApi.IntegrationTests.csproj", "{B99AB9FA-FA0B-410B-ADE5-077FAB402662}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.Common", "BattleshipApi.Common\BattleshipApi.Common\BattleshipApi.Common.csproj", "{F8EE893A-0AC3-4AEA-91D5-D7CDC0769352}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{FD74836B-296B-41A8-91C2-634B24D9DAA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD74836B-296B-41A8-91C2-634B24D9DAA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD74836B-296B-41A8-91C2-634B24D9DAA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B99AB9FA-FA0B-410B-ADE5-077FAB402662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B99AB9FA-FA0B-410B-ADE5-077FAB402662}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B99AB9FA-FA0B-410B-ADE5-077FAB402662}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B99AB9FA-FA0B-410B-ADE5-077FAB402662}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8EE893A-0AC3-4AEA-91D5-D7CDC0769352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8EE893A-0AC3-4AEA-91D5-D7CDC0769352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8EE893A-0AC3-4AEA-91D5-D7CDC0769352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8EE893A-0AC3-4AEA-91D5-D7CDC0769352}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

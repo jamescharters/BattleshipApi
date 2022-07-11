@@ -1,4 +1,6 @@
-﻿namespace BattleshipApi.BusinessLogic.Models;
+﻿using BattleshipApi.BusinessLogic.Interfaces;
+
+namespace BattleshipApi.BusinessLogic.Models;
 
 public class Vessel : ITileOccupant
 {
@@ -11,12 +13,12 @@ public class Vessel : ITileOccupant
     /// A friendly name for the vessel
     /// </summary>
     public string Name { get; set; }
-    
+
     /// <summary>
     /// Number of hits
     /// </summary>
     public int Damage { get; set; }
-    
+
     /// <summary>
     /// Corresponds to of the vessel in virtual "squares" of the board, i.e. how many hits it can take before sinking
     /// </summary>
@@ -46,9 +48,9 @@ public class Vessel : ITileOccupant
             Damage = amount;
             return;
         }
-        
+
         Console.WriteLine($"Vessel {Name} took {amount} damage!");
-        
+
         Damage += amount;
     }
 }
