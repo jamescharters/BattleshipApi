@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace BattleshipApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/v1")]
 public class BattleshipController : ControllerBase
 {
     private readonly IGameRepository gameRepository;
@@ -29,12 +29,13 @@ public class BattleshipController : ControllerBase
     /// </summary>
     /// <param name="request">Parameters for the new game</param>
     /// <returns></returns>
-    [SwaggerOperation("Create a new battleship game")]
     [HttpPost("game")]
+    [SwaggerOperation("Create a new battleship game")]
+    [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status400BadRequest)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public IActionResult NewGame([FromBody] NewGameRequest request)
     {
-        // TODO: Perhaps some kind of token authorisation to protect?
-
         if (!ModelState.IsValid) return BadRequest();
 
         try
@@ -62,26 +63,27 @@ public class BattleshipController : ControllerBase
     /// <param name="playerId">The player id relative to the game</param>
     /// <param name="request">Parameters for the new vessel</param>
     /// <returns></returns>
+    [HttpPost("game/{gameId:Guid}/player/{playerId:Guid}/vessel")]
     [SwaggerOperation("Add a vessel to a player's board")]
-    [HttpPut("game/{gameId:Guid}/player/{playerId:Guid}/vessel")]
+    [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status400BadRequest)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public IActionResult AddVessel(Guid gameId, Guid playerId, [FromBody] AddVesselRequest request)
     {
-        // TODO: Perhaps some kind of token authorisation to protect?
-
         if (!ModelState.IsValid) return BadRequest();
 
         var game = gameRepository.Get(gameId);
-
+        
         if (game == null)
         {
-            return NotFound();
+            return NotFound($"Game {gameId} not found!");
         }
-        
+
         var player = game.GetPlayer(playerId);
 
         if (player == null)
         {
-            return NotFound();
+            return NotFound($"Player {playerId} not found!");
         }
 
         var newVessel = vesselFactory.Create(request.Size);
@@ -112,25 +114,26 @@ public class BattleshipController : ControllerBase
     /// <param name="request">Targetting instructions for the shot</param>
     /// <returns></returns>
     [SwaggerOperation("Fire at a specific set of co-ordinates on the player's board")]
-    [HttpPut("game/{gameId:Guid}/player/{playerId:Guid}/fire")]
+    [HttpPost("game/{gameId:Guid}/player/{playerId:Guid}/fire")]
+    [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status400BadRequest)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public IActionResult FireAt(Guid gameId, Guid playerId, [FromBody] FireAtRequest request)
     {
-        // TODO: Perhaps some kind of token authorisation to protect?
-
         if (!ModelState.IsValid) return BadRequest();
 
         var game = gameRepository.Get(gameId);
 
         if (game == null)
         {
-            return NotFound();
+            return NotFound($"Game {gameId} not found!");
         }
 
         var player = game.GetPlayer(playerId);
 
         if (player == null)
         {
-            return NotFound();
+            return NotFound($"Player {playerId} not found!");
         }
 
         try
@@ -156,21 +159,24 @@ public class BattleshipController : ControllerBase
     /// <returns></returns>
     [SwaggerOperation("Dump a visual representation of the player's board")]
     [HttpGet("game/{gameId:Guid}/player/{playerId:Guid}/board")]
+    [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status400BadRequest)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public IActionResult GetBoard(Guid gameId, Guid playerId)
     {
         // TODO: Perhaps some kind of token authorisation to protect?
         var game = gameRepository.Get(gameId);
-
+        
         if (game == null)
         {
-            return NotFound();
+            return NotFound($"Game {gameId} not found!");
         }
-        
+
         var player = game.GetPlayer(playerId);
 
         if (player == null)
         {
-            return NotFound();
+            return NotFound($"Player {playerId} not found!");
         }
 
         return Ok(player.VesselBoard.ToString());
