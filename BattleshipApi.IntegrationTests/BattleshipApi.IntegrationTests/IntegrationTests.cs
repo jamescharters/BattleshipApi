@@ -131,7 +131,7 @@ public class IntegrationTests
             $"battleship/game/{newGameResponse.Id}/player/{newGameResponse.Players.First().Id}/fire", new
                 FireAtRequest
                 {
-                    Coordinates = new Coordinate(1, 2)
+                    Coordinates = new CartesianCoordinates(1, 2)
                 });
         
         var response = await fireAtResponse.Content.ReadFromJsonAsync<FireAtResponse>();
@@ -173,7 +173,7 @@ public class IntegrationTests
             $"battleship/game/{newGameResponse.Id}/player/{newGameResponse.Players.First().Id}/fire", new
                 FireAtRequest
                 {
-                    Coordinates = new Coordinate(5, 5)
+                    Coordinates = new CartesianCoordinates(5, 5)
                 });
         
         var response = await fireAtResponse.Content.ReadFromJsonAsync<FireAtResponse>();

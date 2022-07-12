@@ -6,5 +6,5 @@ namespace BattleshipApi.Models.Response;
 public class FireAtResponse
 {
     [JsonProperty("result")]
-    public FireResult Result { get; set; }
+    public string Result { get; set; }
 }

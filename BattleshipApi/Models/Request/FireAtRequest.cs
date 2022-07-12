@@ -8,5 +8,5 @@ public class FireAtRequest
 {
     [JsonProperty("coordinates")]
     [Required]
-    public Coordinate Coordinates { get; set; }
+    public CartesianCoordinates? Coordinates { get; set; }
 }

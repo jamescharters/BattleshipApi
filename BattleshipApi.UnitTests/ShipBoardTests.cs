@@ -46,7 +46,7 @@ public class ShipBoardTests
         var vessel1 = new Vessel("Vessel 1", 5);
         // var vessel2 = new Vessel("Vessel 2", 5);
 
-        vesselBoard.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel1);
+        vesselBoard.AddVessel(new CartesianCoordinates(0, 0), VesselOrientation.Horizontal, vessel1);
 
         // Assert.Throws<VesselIntersectionException>(() =>
         //     vesselBoard.AddVessel(new Coordinate(0, 2), VesselOrientation.Horizontal, vessel2));

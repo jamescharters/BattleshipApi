@@ -29,9 +29,9 @@ public class VesselBoard
         MaxX = MaxY = size;
     }
 
-    public Tile? TileAt(Coordinate coordinate)
+    public Tile? TileAt(CartesianCoordinates cartesianCoordinates)
     {
-        return TileAt(coordinate.Row, coordinate.Column);
+        return TileAt(cartesianCoordinates.Row, cartesianCoordinates.Column);
     }
 
     public Tile? TileAt(int row, int column)
@@ -60,7 +60,7 @@ public class VesselBoard
         }
     }
 
-    public void AddVessel(Coordinate start, VesselOrientation vesselOrientation, Vessel vessel)
+    public void AddVessel(CartesianCoordinates start, VesselOrientation vesselOrientation, Vessel vessel)
     {
         if (vessel.Size <= 0) throw new ArgumentOutOfRangeException();
 
@@ -110,17 +110,17 @@ public class VesselBoard
         {
             foreach (var occupiedTile in currentVesselTiles)
             {
-                if (propTile.Coordinates.Equals(occupiedTile.Coordinates))
+                if (propTile.CartesianCoordinateses.Equals(occupiedTile.CartesianCoordinateses))
                 {
                     throw new VesselIntersectionException(
-                        $"Vessel {vessel.Name} intersects tile occupied by vessel {occupiedTile.Occupant.Name} at {propTile.Coordinates}!");
+                        $"Vessel {vessel.Name} intersects tile occupied by vessel {occupiedTile.Occupant.Name} at {propTile.CartesianCoordinateses}!");
                 }
             }
         }
 
         foreach (var proposedTile in proposedVesselTiles)
         {
-            var vesselTile = Tiles[proposedTile.Coordinates.Row, proposedTile.Coordinates.Column];
+            var vesselTile = Tiles[proposedTile.CartesianCoordinateses.Row, proposedTile.CartesianCoordinateses.Column];
             vesselTile.Type = TileType.Vessel;
             vesselTile.Occupant = vessel;
         }

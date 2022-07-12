@@ -1,16 +1,16 @@
-﻿using System.Text;
-using BattleshipApi.Core.Interfaces;
+﻿using BattleshipApi.Core.Interfaces;
 using BattleshipApi.Core.Models;
+using RandomNameGeneratorLibrary;
 
 namespace BattleshipApi.Core.Factories;
 
 public class VesselFactory : IVesselFactory
 {
-    private readonly NamesGenerator namesGenerator;
+    private readonly PersonNameGenerator namesGenerator;
 
     public VesselFactory()
     {
-        namesGenerator = new NamesGenerator();
+        namesGenerator = new PersonNameGenerator();
     }
 
     public virtual Vessel Create(int size)
@@ -20,6 +20,6 @@ public class VesselFactory : IVesselFactory
             throw new ArgumentOutOfRangeException($"{size}");
         }
         
-        return new Vessel(namesGenerator.GetRandomName(), size);
+        return new Vessel(namesGenerator.GenerateRandomFirstAndLastName(), size);
     }
 }

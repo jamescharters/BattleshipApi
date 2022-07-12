@@ -45,12 +45,12 @@ public class Vessel : ITileOccupant
 
         if (Damage + amount == Size)
         {
-            Damage = amount;
+            Damage = Size;
             return;
         }
 
-        Console.WriteLine($"Vessel {Name} took {amount} damage!");
-
         Damage += amount;
+        
+        Console.WriteLine($"Vessel {Name} took {amount} damage! Health now {Size - Damage}");
     }
 }

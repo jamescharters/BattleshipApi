@@ -19,7 +19,7 @@ public class Player
         Name = playerName;
     }
 
-    public void AddVessel(Coordinate start, VesselOrientation vesselOrientation, Vessel vessel)
+    public void AddVessel(CartesianCoordinates start, VesselOrientation vesselOrientation, Vessel vessel)
     {
         VesselBoard.AddVessel(start, vesselOrientation, vessel);
 
@@ -35,32 +35,39 @@ public class Player
         Vessels.Remove(targetVessel);
     }
 
-    public FireResult FireAt(Coordinate coordinate)
+    public FireResult FireAt(CartesianCoordinates cartesianCoordinates)
     {
-        var tile = VesselBoard.TileAt(coordinate);
+        var tile = VesselBoard.TileAt(cartesianCoordinates.Row, cartesianCoordinates.Column);
+
+        if (tile == null)
+            return FireResult.OutOfBounds;
 
         switch (tile.Type)
         {
             case TileType.Hit:
             case TileType.Miss:
-                {
-                    return FireResult.AlreadyFiredAt;
-                }
+            {
+                return FireResult.AlreadyFiredAt;
+            }
             case TileType.Vessel:
+            {
+                tile.Occupant.AddDamage();
+
+                if (tile.Occupant.IsDead)
                 {
-                    tile.Occupant.AddDamage();
-
-                    if (tile.Occupant.IsDead)
-                    {
-                        Console.WriteLine($"{tile.Occupant.Name} has been sunk!");
-                    }
-
-                    return FireResult.Hit;
+                    Console.WriteLine($"Vessel {tile.Occupant.Name} (captained by player {Name}) has been sunk!");
                 }
+
+                tile.Type = TileType.Hit;
+
+                return FireResult.Hit;
+            }
             default:
-                {
-                    return FireResult.Miss;
-                }
+            {
+                tile.Type = TileType.Miss;
+
+                return FireResult.Miss;
+            }
         }
     }
 }

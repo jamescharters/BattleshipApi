@@ -14,7 +14,7 @@ public class VesselBoardTests
 
         var vessel = new Vessel("Fake", 5);
 
-        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel);
+        sut.AddVessel(new CartesianCoordinates(0, 0), VesselOrientation.Horizontal, vessel);
 
         return Verifier.Verify(sut.ToString());
     }
@@ -28,9 +28,9 @@ public class VesselBoardTests
         var vessel2 = new Vessel("Vessel 2", 5);
         var vessel3 = new Vessel("Vessel 3", 3);
 
-        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel1);
-        sut.AddVessel(new Coordinate(1, 3), VesselOrientation.Horizontal, vessel2);
-        sut.AddVessel(new Coordinate(6, 5), VesselOrientation.Vertical, vessel3);
+        sut.AddVessel(new CartesianCoordinates(0, 0), VesselOrientation.Horizontal, vessel1);
+        sut.AddVessel(new CartesianCoordinates(1, 3), VesselOrientation.Horizontal, vessel2);
+        sut.AddVessel(new CartesianCoordinates(6, 5), VesselOrientation.Vertical, vessel3);
 
         return Verifier.Verify(sut.ToString());
     }
@@ -43,10 +43,10 @@ public class VesselBoardTests
         var vessel1 = new Vessel("Vessel 1", 5);
         var vessel2 = new Vessel("Vessel 2", 5);
 
-        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel1);
+        sut.AddVessel(new CartesianCoordinates(0, 0), VesselOrientation.Horizontal, vessel1);
 
         Assert.Throws<VesselIntersectionException>(() =>
-            sut.AddVessel(new Coordinate(4, 4), VesselOrientation.Vertical, vessel2));
+            sut.AddVessel(new CartesianCoordinates(4, 4), VesselOrientation.Vertical, vessel2));
     }
 
     [Test]
@@ -56,10 +56,10 @@ public class VesselBoardTests
 
         var vessel1 = new Vessel("Vessel 1", 5);
 
-        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel1);
+        sut.AddVessel(new CartesianCoordinates(0, 0), VesselOrientation.Horizontal, vessel1);
 
         Assert.Throws<VesselAlreadyPlacedException>(() =>
-            sut.AddVessel(new Coordinate(5, 4), VesselOrientation.Vertical, vessel1));
+            sut.AddVessel(new CartesianCoordinates(5, 4), VesselOrientation.Vertical, vessel1));
     }
 
     [Test]
@@ -70,7 +70,7 @@ public class VesselBoardTests
         var vessel1 = new Vessel("Vessel 1", 5);
 
         Assert.Throws<VesselOutOfBoundsException>(() =>
-            sut.AddVessel(new Coordinate(0, 9), VesselOrientation.Horizontal, vessel1));
+            sut.AddVessel(new CartesianCoordinates(0, 9), VesselOrientation.Horizontal, vessel1));
     }
 
     [Test]
@@ -81,7 +81,7 @@ public class VesselBoardTests
         var vessel1 = new Vessel("Vessel 1", 5);
 
         Assert.Throws<VesselOutOfBoundsException>(() =>
-            sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Vertical, vessel1));
+            sut.AddVessel(new CartesianCoordinates(0, 0), VesselOrientation.Vertical, vessel1));
     }
 
     [Test]
@@ -93,10 +93,10 @@ public class VesselBoardTests
         var vessel2 = new Vessel("Vessel 2", 2);
         var vessel3 = new Vessel("Vessel 3", 2);
 
-        sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel1);
-        sut.AddVessel(new Coordinate(1, 0), VesselOrientation.Horizontal, vessel2);
+        sut.AddVessel(new CartesianCoordinates(0, 0), VesselOrientation.Horizontal, vessel1);
+        sut.AddVessel(new CartesianCoordinates(1, 0), VesselOrientation.Horizontal, vessel2);
 
         Assert.Throws<BoardFullException>(() =>
-            sut.AddVessel(new Coordinate(0, 0), VesselOrientation.Horizontal, vessel3));
+            sut.AddVessel(new CartesianCoordinates(0, 0), VesselOrientation.Horizontal, vessel3));
     }
 }

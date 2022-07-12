@@ -1,11 +1,10 @@
-using System.ComponentModel;
 using BattleshipApi.Core.Interfaces;
-using BattleshipApi.Common.Exceptions;
 using BattleshipApi.Common.Models;
 using BattleshipApi.Models.Request;
 using BattleshipApi.Models.Response;
 using BattleshipApi.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace BattleshipApi.Controllers;
@@ -38,15 +37,22 @@ public class BattleshipController : ControllerBase
 
         if (!ModelState.IsValid) return BadRequest();
 
-        var newGame = gameFactory.Create(request.Players);
-
-        gameRepository.Add(newGame);
-
-        return Ok(new NewGameResponse
+        try
         {
-            Id = newGame.GameId,
-            Players = newGame.Players.Select(_ => new PlayerInformation {Id = _.Id, Name = _.Name})
-        });
+            var newGame = gameFactory.Create(request.Players);
+
+            gameRepository.Add(newGame);
+
+            return Ok(new NewGameResponse
+            {
+                Id = newGame.GameId,
+                Players = newGame.Players.Select(_ => new PlayerInformation {Id = _.Id, Name = _.Name})
+            });
+        }
+        catch (Exception e)
+        {
+            return InternalServerError(e.Message);
+        }
     }
 
     /// <summary>
@@ -82,7 +88,7 @@ public class BattleshipController : ControllerBase
 
         try
         {
-            player.AddVessel(new Coordinate(request.Row, request.Column), request.Orientation, newVessel);
+            player.AddVessel(new CartesianCoordinates(request.Row, request.Column), request.Orientation, newVessel);
 
             return Ok(new AddVesselResponse
             {
@@ -94,7 +100,7 @@ public class BattleshipController : ControllerBase
         }
         catch (Exception e)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            return InternalServerError(e.Message);
         }
     }
 
@@ -127,12 +133,19 @@ public class BattleshipController : ControllerBase
             return NotFound();
         }
 
-        var result = player.FireAt(request.Coordinates);
-
-        return Ok(new FireAtResponse
+        try
         {
-            Result = result
-        });
+            var result = player.FireAt(request.Coordinates);
+
+            return Ok(new FireAtResponse
+            {
+                Result = result.ToString("G")
+            });
+        }
+        catch (Exception e)
+        {
+            return InternalServerError(e.Message);
+        }
     }
 
     /// <summary>
@@ -162,4 +175,17 @@ public class BattleshipController : ControllerBase
 
         return Ok(player.VesselBoard.ToString());
     }
+    
+    #region Private
+    private ObjectResult InternalServerError([ActionResultObjectValue] string message)
+    {
+        return new ObjectResult(new
+        {
+            Message = message
+        })
+        {
+            StatusCode = StatusCodes.Status500InternalServerError
+        };
+    }
+    #endregion
 }

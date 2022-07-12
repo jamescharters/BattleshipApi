@@ -1,4 +1,5 @@
 ﻿using BattleshipApi.Common.Enums;
+using BattleshipApi.Common.Exceptions;
 using BattleshipApi.Common.Models;
 using BattleshipApi.Core.Interfaces;
 
@@ -33,37 +34,23 @@ public class Game
         Players.Add(playerFactory.Create(playerName));
     }
 
-    public FireResult FireAt(Guid playerId, Coordinate target)
+    public FireResult FireAt(Guid playerId, CartesianCoordinates target)
     {
         var currentPlayer = GetPlayer(playerId);
 
-        var vesselTile = currentPlayer.VesselBoard.TileAt(target);
-
-        if (vesselTile == null)
+        if (currentPlayer == null)
         {
-            // Thar be some wild shootin' there son...
-            Console.WriteLine($"Target co-ordinate ({target.Row}, {target.Column}) is out of bounds!");
-
-            return FireResult.OutOfBounds;
+            throw new InvalidPlayerException($"Player {playerId} does not exist!");
         }
 
-        if (vesselTile.Type is TileType.Hit or TileType.Miss)
-        {
-            Console.WriteLine($"Target co-ordinate ({target.Row}, {target.Column}) has already been fired at!");
-
-            return FireResult.AlreadyFiredAt;
-        }
-
-        currentPlayer.FireAt(target);
+        var result = currentPlayer.FireAt(target);
 
         if (currentPlayer.IsDefeated)
         {
             Console.WriteLine($"Captain {currentPlayer.Name} has been defeated!");
         }
 
-        vesselTile.Type = vesselTile.Type == TileType.Vessel ? TileType.Hit : TileType.Miss;
-
-        return vesselTile.Type == TileType.Hit ? FireResult.Hit : FireResult.Miss;
+        return result;
     }
 
     #region Private 

@@ -9,8 +9,8 @@ public class TileTests
     {
         var sut = new Tile(1, 2, TileType.Vessel);
 
-        Assert.AreEqual(1, sut.Coordinates.Row);
-        Assert.AreEqual(2, sut.Coordinates.Column);
+        Assert.AreEqual(1, sut.CartesianCoordinateses.Row);
+        Assert.AreEqual(2, sut.CartesianCoordinateses.Column);
         Assert.AreEqual(TileType.Vessel, sut.Type);
     }
     

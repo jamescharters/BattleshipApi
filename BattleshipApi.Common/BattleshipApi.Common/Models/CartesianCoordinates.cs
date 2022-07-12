@@ -1,6 +1,6 @@
 ﻿namespace BattleshipApi.Common.Models;
 
-public record class Coordinate
+public record class CartesianCoordinates
 {
     /// <summary>
     /// Row
@@ -12,7 +12,7 @@ public record class Coordinate
     /// </summary>
     public int Column { get; set; }
 
-    public Coordinate(int row, int column)
+    public CartesianCoordinates(int row, int column)
     {
         if (row < 0) throw new ArgumentOutOfRangeException($"{nameof(row)}");
         if (column < 0) throw new ArgumentOutOfRangeException($"{nameof(column)}");
