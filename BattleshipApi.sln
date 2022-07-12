@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.UnitTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.Core", "BattleshipApi.Core\BattleshipApi.Core.csproj", "{FD74836B-296B-41A8-91C2-634B24D9DAA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.IntegrationTests", "BattleshipApi.IntegrationTests\BattleshipApi.IntegrationTests\BattleshipApi.IntegrationTests.csproj", "{B99AB9FA-FA0B-410B-ADE5-077FAB402662}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.IntegrationTests", "BattleshipApi.IntegrationTests\BattleshipApi.IntegrationTests.csproj", "{B99AB9FA-FA0B-410B-ADE5-077FAB402662}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.Common", "BattleshipApi.Common\BattleshipApi.Common.csproj", "{F8EE893A-0AC3-4AEA-91D5-D7CDC0769352}"
 EndProject
