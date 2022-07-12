@@ -31,7 +31,7 @@ public class BattleshipController : ControllerBase
     /// <returns></returns>
     [HttpPost("game")]
     [SwaggerOperation("Create a new battleship game")]
-    [SwaggerResponse(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public IActionResult NewGame([FromBody] CreateGameRequest request)
@@ -65,7 +65,7 @@ public class BattleshipController : ControllerBase
     /// <returns></returns>
     [HttpPost("game/{gameId:Guid}/player/{playerId:Guid}/vessel")]
     [SwaggerOperation("Add a vessel to a player's board")]
-    [SwaggerResponse(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateVesselResponse), StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public IActionResult AddVessel(Guid gameId, Guid playerId, [FromBody] CreateVesselRequest request)
@@ -115,7 +115,7 @@ public class BattleshipController : ControllerBase
     /// <returns></returns>
     [SwaggerOperation("Fire at a specific set of co-ordinates on the player's board")]
     [HttpPost("game/{gameId:Guid}/player/{playerId:Guid}/fire")]
-    [SwaggerResponse(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(FireAtCoordinatesResponse), StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public IActionResult FireAt(Guid gameId, Guid playerId, [FromBody] FireAtCoordinatesRequest request)
@@ -159,7 +159,7 @@ public class BattleshipController : ControllerBase
     /// <returns></returns>
     [SwaggerOperation("Dump a visual representation of the player's board")]
     [HttpGet("game/{gameId:Guid}/player/{playerId:Guid}/board")]
-    [SwaggerResponse(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public IActionResult GetBoard(Guid gameId, Guid playerId)
