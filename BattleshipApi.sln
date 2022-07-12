@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.Core", "Battl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.IntegrationTests", "BattleshipApi.IntegrationTests\BattleshipApi.IntegrationTests\BattleshipApi.IntegrationTests.csproj", "{B99AB9FA-FA0B-410B-ADE5-077FAB402662}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.Common", "BattleshipApi.Common\BattleshipApi.Common\BattleshipApi.Common.csproj", "{F8EE893A-0AC3-4AEA-91D5-D7CDC0769352}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.Common", "BattleshipApi.Common\BattleshipApi.Common.csproj", "{F8EE893A-0AC3-4AEA-91D5-D7CDC0769352}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

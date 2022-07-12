@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BattleshipApi.Common\BattleshipApi.Common\BattleshipApi.Common.csproj" />
+      <ProjectReference Include="..\BattleshipApi.Common\BattleshipApi.Common.csproj" />
     </ItemGroup>
 
 </Project>
