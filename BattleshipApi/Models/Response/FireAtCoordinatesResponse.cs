@@ -1,9 +1,8 @@
-﻿using BattleshipApi.Common.Enums;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace BattleshipApi.Models.Response;
 
-public class FireAtResponse
+public record FireAtCoordinatesResponse
 {
     [JsonProperty("result")]
     public string Result { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace BattleshipApi.Models.Response;
 
-public class AddVesselResponse
+public record CreateVesselResponse
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }

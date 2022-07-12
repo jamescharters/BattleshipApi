@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace BattleshipApi.Models.Request;
 
-public class FireAtRequest
+public record FireAtCoordinatesRequest
 {
     [JsonProperty("coordinates")]
     [Required]

@@ -11,14 +11,14 @@ namespace BattleshipApi.IntegrationTests;
 public class IntegrationTests
 {
     private const string API_ROOT = "battleship/v1/game";
-    
+
     [Test]
     public async Task it_should_create_game()
     {
         var webAppFactory = new WebApplicationFactory<Program>();
         var httpClient = webAppFactory.CreateDefaultClient();
 
-        var newGameResponse = await createGame(webAppFactory, httpClient);
+        var newGameResponse = await createGame(httpClient);
 
         Assert.AreNotEqual(Guid.Empty, newGameResponse.Id);
         Assert.AreEqual(1, newGameResponse.Players.Count());
@@ -32,7 +32,7 @@ public class IntegrationTests
         var webAppFactory = new WebApplicationFactory<Program>();
         var httpClient = webAppFactory.CreateDefaultClient();
 
-        var newGameResponse = await createGame(webAppFactory, httpClient);
+        var newGameResponse = await createGame(httpClient);
 
         var getResponse =
             await httpClient.GetAsync(
@@ -49,98 +49,63 @@ public class IntegrationTests
         var webAppFactory = new WebApplicationFactory<Program>();
         var httpClient = webAppFactory.CreateDefaultClient();
 
-        var newGameResponse = await createGame(webAppFactory, httpClient);
+        var newGameResponse = await createGame(httpClient);
 
-        var createVesselResponse = await httpClient.PostAsJsonAsync(
-            $"{API_ROOT}/{newGameResponse.Id}/player/{newGameResponse.Players.First().Id}/vessel", new
-                AddVesselRequest
-                {
-                    Orientation = VesselOrientation.Horizontal,
-                    Size = 5,
-                    Column = 2,
-                    Row = 1
-                });
+        var playerId = newGameResponse.Players.First().Id;
 
-        var addVesselResponse = await createVesselResponse.Content.ReadFromJsonAsync<AddVesselResponse>();
+        var createVesselResponse = await createVessel(httpClient, newGameResponse.Id,
+            playerId, new CartesianCoordinates(2, 2), 5);
 
-        Assert.AreNotEqual(Guid.Empty,addVesselResponse.Id);
-        Assert.AreEqual(5,addVesselResponse.Size);
-        Assert.IsFalse(string.IsNullOrWhiteSpace(addVesselResponse.Name));
-        Assert.AreEqual(0, addVesselResponse.Damage);
+        Assert.AreNotEqual(Guid.Empty, createVesselResponse.Id);
+        Assert.AreEqual(5, createVesselResponse.Size);
+        Assert.IsFalse(string.IsNullOrWhiteSpace(createVesselResponse.Name));
+        Assert.AreEqual(0, createVesselResponse.Damage);
     }
-    
+
     [Test]
     public async Task it_should_allow_firing_hit()
     {
         var webAppFactory = new WebApplicationFactory<Program>();
         var httpClient = webAppFactory.CreateDefaultClient();
 
-        var newGameResponse = await createGame(webAppFactory, httpClient);
+        var newGameResponse = await createGame(httpClient);
 
-        var createVesselResponse = await httpClient.PostAsJsonAsync(
-            $"{API_ROOT}/{newGameResponse.Id}/player/{newGameResponse.Players.First().Id}/vessel", new
-                AddVesselRequest
-                {
-                    Orientation = VesselOrientation.Horizontal,
-                    Size = 5,
-                    Column = 2,
-                    Row = 1
-                });
+        var playerId = newGameResponse.Players.First().Id;
 
-        await createVesselResponse.Content.ReadFromJsonAsync<AddVesselResponse>();
+        await createVessel(httpClient, newGameResponse.Id, playerId, new CartesianCoordinates(1, 1), 5);
 
-        var fireAtResponse = await httpClient.PutAsJsonAsync(
-            $"{API_ROOT}/{newGameResponse.Id}/player/{newGameResponse.Players.First().Id}/fire", new
-                FireAtRequest
-                {
-                    Coordinates = new CartesianCoordinates(1, 2)
-                });
-        
-        var response = await fireAtResponse.Content.ReadFromJsonAsync<FireAtResponse>();
+        var response = await fireAt(httpClient, newGameResponse.Id, playerId, new CartesianCoordinates(1, 2));
 
-        Assert.AreEqual(FireResult.Hit, response.Result);
+        Assert.AreEqual(FireResult.Hit.ToString("G"), response.Result);
     }
-    
+
     [Test]
     public async Task it_should_allow_firing_miss()
     {
         var webAppFactory = new WebApplicationFactory<Program>();
         var httpClient = webAppFactory.CreateDefaultClient();
-        
-        var newGameResponse = await createGame(webAppFactory, httpClient);
 
-        var createVesselResponse = await httpClient.PutAsJsonAsync(
-            $"{API_ROOT}/{newGameResponse.Id}/player/{newGameResponse.Players.First().Id}/vessel", new
-                AddVesselRequest
-                {
-                    Orientation = VesselOrientation.Horizontal,
-                    Size = 5,
-                    Column = 2,
-                    Row = 1
-                });
+        var newGameResponse = await createGame(httpClient);
 
-        await createVesselResponse.Content.ReadFromJsonAsync<AddVesselResponse>();
+        var playerId = newGameResponse.Players.First().Id;
 
-        var fireAtResponse = await httpClient.PutAsJsonAsync(
-            $"{API_ROOT}/{newGameResponse.Id}/player/{newGameResponse.Players.First().Id}/fire", new
-                FireAtRequest
-                {
-                    Coordinates = new CartesianCoordinates(5, 5)
-                });
-        
-        var response = await fireAtResponse.Content.ReadFromJsonAsync<FireAtResponse>();
+        await createVessel(httpClient, newGameResponse.Id, playerId, new CartesianCoordinates(0, 0), 5);
 
-        Assert.AreEqual(FireResult.Miss, response.Result);
+        var response = await fireAt(httpClient, newGameResponse.Id, playerId, new CartesianCoordinates(5, 5));
+
+        Assert.AreEqual(FireResult.Miss.ToString("G"), response.Result);
     }
-    
+
     // TODO: how do we indicate the player has sunk a ship / lost the game?
-    
+
     // TODO: integration tests around negative cases (BadRequest responses etc)
 
-    private async Task<NewGameResponse> createGame(WebApplicationFactory<Program> webAppFactory, HttpClient httpClient)
+    #region Private
+
+    private async Task<CreateGameResponse> createGame(HttpClient httpClient)
     {
         var createResponse = await httpClient.PostAsJsonAsync(API_ROOT, new
-            NewGameRequest
+            CreateGameRequest
             {
                 Players = new[]
                 {
@@ -148,6 +113,37 @@ public class IntegrationTests
                 }
             });
 
-        return await createResponse.Content.ReadFromJsonAsync<NewGameResponse>();
+        return await createResponse.Content.ReadFromJsonAsync<CreateGameResponse>();
     }
+
+    private async Task<CreateVesselResponse> createVessel(HttpClient httpClient, Guid gameId, Guid playerId,
+        CartesianCoordinates origin, int size)
+    {
+        var createVesselResponse = await httpClient.PostAsJsonAsync(
+            $"{API_ROOT}/{gameId}/player/{playerId}/vessel", new
+                CreateVesselRequest
+                {
+                    Orientation = VesselOrientation.Horizontal,
+                    Size = size,
+                    Column = origin.Column,
+                    Row = origin.Row
+                });
+
+        return await createVesselResponse.Content.ReadFromJsonAsync<CreateVesselResponse>();
+    }
+
+    private async Task<FireAtCoordinatesResponse> fireAt(HttpClient httpClient, Guid gameId, Guid playerId,
+        CartesianCoordinates coordinates)
+    {
+        var fireAtResponse = await httpClient.PostAsJsonAsync(
+            $"{API_ROOT}/{gameId}/player/{playerId}/fire", new
+                FireAtCoordinatesRequest
+                {
+                    Coordinates = coordinates
+                });
+
+        return await fireAtResponse.Content.ReadFromJsonAsync<FireAtCoordinatesResponse>();
+    }
+
+    #endregion
 }

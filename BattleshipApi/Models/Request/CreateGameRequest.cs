@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace BattleshipApi.Models.Request;
 
-public class NewGameRequest
+public record CreateGameRequest
 {
     [JsonProperty]
     [Required]

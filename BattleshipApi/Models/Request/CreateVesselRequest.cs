@@ -4,14 +4,14 @@ using Newtonsoft.Json;
 
 namespace BattleshipApi.Models.Request;
 
-public class AddVesselRequest
+public record CreateVesselRequest
 {
-    [Range(0, 10)]
+    [Range(0, 9)]
     [JsonProperty("column")]
     [Required]
     public int Column { get; set; }
     
-    [Range(0, 10)]
+    [Range(0, 9)]
     [JsonProperty("row")]    
     [Required]
     public int Row { get; set; }
@@ -20,9 +20,8 @@ public class AddVesselRequest
     [Required]
     public VesselOrientation Orientation { get; set; }
     
-    [Range(1, 10)]
+    [Range(1, 5)]
     [JsonProperty("size")]
     [Required]
     public int Size { get; set; }
-    
 }

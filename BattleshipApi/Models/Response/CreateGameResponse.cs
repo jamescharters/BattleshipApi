@@ -2,14 +2,14 @@
 
 namespace BattleshipApi.Models.Response;
 
-public class PlayerInformation
+public record PlayerInformation
 {
     [JsonProperty("id")] public Guid Id { get; set; }
 
     [JsonProperty("name")] public string? Name { get; set; }
 }
 
-public class NewGameResponse
+public record CreateGameResponse
 {
     [JsonProperty("id")] public Guid Id { get; set; }
 

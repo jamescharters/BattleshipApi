@@ -34,7 +34,7 @@ public class BattleshipController : ControllerBase
     [SwaggerResponse(StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-    public IActionResult NewGame([FromBody] NewGameRequest request)
+    public IActionResult NewGame([FromBody] CreateGameRequest request)
     {
         if (!ModelState.IsValid) return BadRequest();
 
@@ -44,7 +44,7 @@ public class BattleshipController : ControllerBase
 
             gameRepository.Add(newGame);
 
-            return Ok(new NewGameResponse
+            return Ok(new CreateGameResponse
             {
                 Id = newGame.GameId,
                 Players = newGame.Players.Select(_ => new PlayerInformation {Id = _.Id, Name = _.Name})
@@ -68,7 +68,7 @@ public class BattleshipController : ControllerBase
     [SwaggerResponse(StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-    public IActionResult AddVessel(Guid gameId, Guid playerId, [FromBody] AddVesselRequest request)
+    public IActionResult AddVessel(Guid gameId, Guid playerId, [FromBody] CreateVesselRequest request)
     {
         if (!ModelState.IsValid) return BadRequest();
 
@@ -92,7 +92,7 @@ public class BattleshipController : ControllerBase
         {
             player.AddVessel(new CartesianCoordinates(request.Row, request.Column), request.Orientation, newVessel);
 
-            return Ok(new AddVesselResponse
+            return Ok(new CreateVesselResponse
             {
                 Id = newVessel.Id,
                 Damage = newVessel.Damage,
@@ -118,7 +118,7 @@ public class BattleshipController : ControllerBase
     [SwaggerResponse(StatusCodes.Status200OK)]
     [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-    public IActionResult FireAt(Guid gameId, Guid playerId, [FromBody] FireAtRequest request)
+    public IActionResult FireAt(Guid gameId, Guid playerId, [FromBody] FireAtCoordinatesRequest request)
     {
         if (!ModelState.IsValid) return BadRequest();
 
@@ -140,7 +140,7 @@ public class BattleshipController : ControllerBase
         {
             var result = player.FireAt(request.Coordinates);
 
-            return Ok(new FireAtResponse
+            return Ok(new FireAtCoordinatesResponse
             {
                 Result = result.ToString("G")
             });
