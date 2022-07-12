@@ -1,7 +1,7 @@
 ﻿using BattleshipApi.Common.Enums;
 using BattleshipApi.Common.Models;
 
-namespace BattleshipApi.BusinessLogic.Models;
+namespace BattleshipApi.Core.Models;
 
 public class Player
 {
@@ -9,7 +9,7 @@ public class Player
     public string Name { get; set; }
     public VesselBoard VesselBoard { get; set; } = new();
     public List<Vessel> Vessels { get; set; } = new();
-    public bool IsDefeated => Vessels.All(_ => _.IsDead);
+    public bool IsDefeated => Vessels.Any() && Vessels.All(_ => _.IsDead);
 
     public Player(string playerName)
     {

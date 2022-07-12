@@ -1,6 +1,6 @@
-﻿using BattleshipApi.BusinessLogic.Interfaces;
+﻿using BattleshipApi.Core.Interfaces;
 
-namespace BattleshipApi.BusinessLogic.Models;
+namespace BattleshipApi.Core.Models;
 
 public class Vessel : ITileOccupant
 {

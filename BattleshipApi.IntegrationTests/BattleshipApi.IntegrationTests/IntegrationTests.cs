@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace BattleshipApi.IntegrationTests;
 
-public class IntegrationTest
+public class IntegrationTests
 {
     [Test]
     public async Task it_should_create_game()
@@ -20,7 +20,7 @@ public class IntegrationTest
         var createResponse = await httpClient.PostAsJsonAsync("battleship/game", new
             NewGameRequest
             {
-                Players = new List<string>
+                Players = new[]
                 {
                     "James"
                 }
@@ -44,7 +44,7 @@ public class IntegrationTest
         var createResponse = await httpClient.PostAsJsonAsync("battleship/game", new
             NewGameRequest
             {
-                Players = new List<string>
+                Players = new[]
                 {
                     "James"
                 }
@@ -71,7 +71,7 @@ public class IntegrationTest
         var createResponse = await httpClient.PostAsJsonAsync("battleship/game", new
             NewGameRequest
             {
-                Players = new List<string>
+                Players = new[]
                 {
                     "James"
                 }
@@ -107,7 +107,7 @@ public class IntegrationTest
         var createResponse = await httpClient.PostAsJsonAsync("battleship/game", new
             NewGameRequest
             {
-                Players = new List<string>
+                Players = new[]
                 {
                     "James"
                 }
@@ -149,7 +149,7 @@ public class IntegrationTest
         var createResponse = await httpClient.PostAsJsonAsync("battleship/game", new
             NewGameRequest
             {
-                Players = new List<string>
+                Players = new[]
                 {
                     "James"
                 }
@@ -182,4 +182,6 @@ public class IntegrationTest
     }
     
     // TODO: how do we indicate the player has sunk a ship / lost the game?
+    
+    // TODO: integration tests around negative cases (BadRequest responses etc)
 }

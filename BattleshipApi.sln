@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi", "Battleship
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.UnitTests", "BattleshipApi.UnitTests\BattleshipApi.UnitTests.csproj", "{B542B977-B4BE-48B8-AA4A-FD9439D121CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.BusinessLogic", "BattleshipApi.BusinessLogic\BattleshipApi.BusinessLogic.csproj", "{FD74836B-296B-41A8-91C2-634B24D9DAA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.Core", "BattleshipApi.Core\BattleshipApi.Core.csproj", "{FD74836B-296B-41A8-91C2-634B24D9DAA2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipApi.IntegrationTests", "BattleshipApi.IntegrationTests\BattleshipApi.IntegrationTests\BattleshipApi.IntegrationTests.csproj", "{B99AB9FA-FA0B-410B-ADE5-077FAB402662}"
 EndProject

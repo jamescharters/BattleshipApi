@@ -7,5 +7,5 @@ public class NewGameRequest
 {
     [JsonProperty]
     [Required]
-    public List<string> Players { get; set; }
+    public string[] Players { get; set; }
 }

@@ -44,7 +44,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BattleshipApi.BusinessLogic\BattleshipApi.BusinessLogic.csproj" />
+      <ProjectReference Include="..\BattleshipApi.Core\BattleshipApi.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>

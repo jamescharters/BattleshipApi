@@ -1,8 +1,8 @@
-﻿using BattleshipApi.BusinessLogic.Interfaces;
-using BattleshipApi.Common.Enums;
+﻿using BattleshipApi.Common.Enums;
 using BattleshipApi.Common.Models;
+using BattleshipApi.Core.Interfaces;
 
-namespace BattleshipApi.BusinessLogic.Models;
+namespace BattleshipApi.Core.Models;
 
 public class Game
 {
@@ -16,11 +16,11 @@ public class Game
         this.playerFactory = playerFactory;
     }
 
-    public void Initialise(List<string> playerNames)
+    public void Initialise(params string[] playerNames)
     {
-        if (!playerNames.Any())
+        if (playerNames == null || !playerNames.Any())
         {
-            throw new ArgumentOutOfRangeException($"{nameof(playerNames)}");
+            throw new ArgumentNullException($"{nameof(playerNames)} does not contain any elements!");
         }
 
         Players.AddRange(playerNames.Select(_ => playerFactory.Create(_)));

@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using BattleshipApi.BusinessLogic.Interfaces;
-using BattleshipApi.BusinessLogic.Models;
+using BattleshipApi.Core.Interfaces;
+using BattleshipApi.Core.Models;
 
-namespace BattleshipApi.BusinessLogic.Factories;
+namespace BattleshipApi.Core.Factories;
 
 public class VesselFactory : IVesselFactory
 {
@@ -13,7 +13,7 @@ public class VesselFactory : IVesselFactory
         namesGenerator = new NamesGenerator();
     }
 
-    public Vessel Create(int size)
+    public virtual Vessel Create(int size)
     {
         if (size <= 0)
         {

@@ -3,7 +3,7 @@ using BattleshipApi.Common.Enums;
 using BattleshipApi.Common.Exceptions;
 using BattleshipApi.Common.Models;
 
-namespace BattleshipApi.BusinessLogic.Models;
+namespace BattleshipApi.Core.Models;
 
 public class VesselBoard
 {

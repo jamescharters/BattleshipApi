@@ -1,7 +1,7 @@
-﻿using BattleshipApi.BusinessLogic.Interfaces;
-using BattleshipApi.Common.Models;
+﻿using BattleshipApi.Common.Models;
+using BattleshipApi.Core.Interfaces;
 
-namespace BattleshipApi.BusinessLogic.Models;
+namespace BattleshipApi.Core.Models;
 
 /// <summary>
 /// Denotes a tile on the grid of tiles that make up a Battleship board

@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using BattleshipApi.BusinessLogic.Interfaces;
+using BattleshipApi.Core.Interfaces;
 using BattleshipApi.Common.Exceptions;
 using BattleshipApi.Common.Models;
 using BattleshipApi.Models.Request;
@@ -89,15 +89,12 @@ public class BattleshipController : ControllerBase
                 Id = newVessel.Id,
                 Damage = newVessel.Damage,
                 Name = newVessel.Name,
-                Size = newVessel.Size
+                Size = request.Size
             });
         }
-        catch (VesselOutOfBoundsException e)
+        catch (Exception e)
         {
-            // TODO: Catch other types of exceptions
-
-            Console.WriteLine(e);
-            throw;
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 

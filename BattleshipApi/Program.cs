@@ -1,5 +1,5 @@
-using BattleshipApi.BusinessLogic.Factories;
-using BattleshipApi.BusinessLogic.Interfaces;
+using BattleshipApi.Core.Factories;
+using BattleshipApi.Core.Interfaces;
 using BattleshipApi.Repository;
 
 var builder = WebApplication.CreateBuilder(args);

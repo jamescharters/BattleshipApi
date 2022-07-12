@@ -1,4 +1,4 @@
-﻿namespace BattleshipApi.BusinessLogic.Models;
+﻿namespace BattleshipApi.Core.Models;
 
 public enum TileType
 {

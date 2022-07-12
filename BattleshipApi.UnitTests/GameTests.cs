@@ -1,12 +1,22 @@
-﻿using BattleshipApi.BusinessLogic.Factories;
-using BattleshipApi.BusinessLogic.Models;
+﻿using BattleshipApi.Core.Factories;
+using BattleshipApi.Core.Models;
 using BattleshipApi.Common.Enums;
 using BattleshipApi.Common.Models;
+using Moq;
 
 namespace BattleshipApi.UnitTests;
 
-public class BattleshipGameTests
+public class GameTests
 {
+    private Mock<PlayerFactory> mockPlayerFactory;
+
+    public GameTests()
+    {
+        mockPlayerFactory = new Mock<PlayerFactory>();
+
+        mockPlayerFactory.Setup(_ => _.Create(It.IsAny<string>())).Returns<string>(_ => new Player(_));
+    }
+
     [Test]
     public void it_should_return_Miss_on_fire_miss()
     {
@@ -59,7 +69,7 @@ public class BattleshipGameTests
 
     private Game createGame()
     {
-        var sut = new Game(new PlayerFactory());
+        var sut = new Game(mockPlayerFactory.Object);
 
         sut.Initialise("Salty Dawg");
 

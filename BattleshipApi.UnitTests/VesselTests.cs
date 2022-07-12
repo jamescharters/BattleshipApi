@@ -1,4 +1,4 @@
-﻿using BattleshipApi.BusinessLogic.Models;
+﻿using BattleshipApi.Core.Models;
 
 namespace BattleshipApi.UnitTests;
 
