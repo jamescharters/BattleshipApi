@@ -22,6 +22,4 @@ Example Battleship API written in dotnet 6.
 
 ## AWS EBS 
 
-A version of this application is hosted on AWS EBS: [Link](http://battleshipapi-env.eba-9ntupae6.ap-southeast-2.elasticbeanstalk.com/swagger/index.html)
-
 Build the package for AWS EBS using `dotnet publish .\BattleshipApi\BattleshipApi.csproj -c Release`, zip the contents and upload.
